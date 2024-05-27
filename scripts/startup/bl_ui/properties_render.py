@@ -622,15 +622,17 @@ class RENDER_PT_eevee_next_gi_approximation(RenderButtonsPanel, Panel):
         layout.use_property_split = True
         layout.use_property_decorate = False
 
+        layout.prop(props, "fast_gi_method")
+        layout.prop(props, "horizon_resolution", text="Resolution")
+
         col = layout.column(align=True)
         col.prop(props, "fast_gi_ray_count", text="Rays")
         col.prop(props, "fast_gi_step_count", text="Steps")
 
-        col = layout.column()
-        col.prop(props, "horizon_quality", text="Precision")
-        col.prop(props, "horizon_thickness", text="Thickness")
-        col.prop(props, "horizon_resolution", text="Resolution")
-        col.prop(props, "horizon_bias", text="Bias")
+        layout.prop(props, "horizon_quality", text="Precision")
+        layout.prop(props, "fast_gi_distance")
+        layout.prop(props, "horizon_thickness", text="Thickness")
+        layout.prop(props, "horizon_bias", text="Bias")
 
 
 class RENDER_PT_eevee_next_denoise(RenderButtonsPanel, Panel):

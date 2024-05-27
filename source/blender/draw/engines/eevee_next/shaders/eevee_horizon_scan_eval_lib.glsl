@@ -102,7 +102,8 @@ HorizonScanResult horizon_scan_eval(vec3 vP,
                                     float angle_bias,
                                     const int slice_count,
                                     const int sample_count,
-                                    const bool reversed)
+                                    const bool reversed,
+                                    const bool ao_only)
 {
   vec3 vV = drw_view_incident_vector(vP);
 
@@ -168,7 +169,7 @@ HorizonScanResult horizon_scan_eval(vec3 vP,
           time += 1.0;
         }
 
-        float lod = 1.0 + (float(j >> 2) / (1.0 + uniform_buf.ao.quality));
+        float lod = 1.0 + float(j >> 2) * uniform_buf.ao.lod_factor;
 
         vec2 sample_uv = ssray.origin.xy + ssray.direction.xy * time;
         float sample_depth = textureLod(hiz_tx, sample_uv * uniform_buf.hiz.uv_scale, lod).r;
@@ -211,7 +212,7 @@ HorizonScanResult horizon_scan_eval(vec3 vP,
         /* If we are tracing backward, the angles are negative. Swizzle to keep correct order. */
         theta = (side == 0) ? theta.xy : -theta.yx;
 
-        vec3 sample_radiance = horizon_scan_sample_radiance(sample_uv);
+        vec3 sample_radiance = ao_only ? vec3(0.0) : horizon_scan_sample_radiance(sample_uv);
         /* Take emitter surface normal into consideration. */
         vec3 sample_normal = horizon_scan_sample_normal(sample_uv);
         /* Discard back-facing samples.
