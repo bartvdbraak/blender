@@ -44,7 +44,7 @@ jobs:
           endpoint: https://weu.codesigning.azure.net/
           trusted-signing-account-name: bartvdbraak-blender
           certificate-profile-name: code-sign
-          files-folder: ${{ github.workspace }}\blender\build_windows_x64_vc17_Release\bin\Release
+          files-folder: ${{ github.workspace }}\..\build_windows_x64_vc17_Release\bin\Release
           files-folder-filter: exe,dll,pyd
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
