@@ -43,8 +43,9 @@ jobs:
       - name: Catalog
         shell: pwsh
         run: |
-          $files = Get-ChildItem -Path "${{ github.workspace }}\..\build_windows_x64_vc17_Release\bin\Release" -Recurse -Include *.exe, *.dll, *.pyd | Where-Object { $_.FullName -notmatch "\\blender\.crt" }
-          $files | ForEach-Object { $_.FullName } | Out-File sign-catalog.txt -Encoding utf8
+          $workspace = "${{ github.workspace }}"
+          $files = Get-ChildItem -Path "$workspace\..\build_windows_x64_vc17_Release\bin\Release" -Recurse -Include *.exe, *.dll, *.pyd | Where-Object { $_.FullName -notmatch "\\blender\.crt" }
+          $files | ForEach-Object { $_.FullName -replace [Regex]::Escape($workspace), "" } | Out-File sign-catalog.txt -Encoding utf8
 
       - name: Sign
         uses: azure/trusted-signing-action@v0.3.20
