@@ -14,6 +14,7 @@ on:
 jobs:
   build-windows:
     runs-on: [self-hosted, Windows, X64]
+    environment: sign
     steps:
       - name: Download Sources
         uses: actions/checkout@v3
@@ -34,4 +35,17 @@ jobs:
       - name: Build
         shell: cmd
         run: make
-  
+
+      - name: Sign
+        uses: azure/trusted-signing-action@v0.3.20
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          endpoint: https://weu.codesigning.azure.net/
+          trusted-signing-account-name: vscx-codesigning
+          certificate-profile-name: bartvdbraak-blender
+          files-folder: ${{ github.workspace }}
+          files-folder-filter: exe,dll,pyd
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
