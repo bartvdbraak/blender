@@ -40,6 +40,12 @@ jobs:
       #   shell: cmd
       #   run: make
 
+      - name: Catalog
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem -Path "${{ github.workspace }}\..\build_windows_x64_vc17_Release\bin\Release" -Recurse -Include *.exe, *.dll, *.pyd | Where-Object { $_.FullName -notmatch "\\blender\.crt" }
+          $files | ForEach-Object { $_.FullName } | Out-File sign-catalog.txt -Encoding utf8
+
       - name: Sign
         uses: azure/trusted-signing-action@v0.3.20
         with:
@@ -49,8 +55,7 @@ jobs:
           endpoint: https://weu.codesigning.azure.net/
           trusted-signing-account-name: bartvdbraak-blender
           certificate-profile-name: code-sign
-          files-folder: ${{ github.workspace }}\..\build_windows_x64_vc17_Release\bin\Release
-          files-folder-filter: exe,dll,pyd
+          files-catalog: ${{ github.workspace }}\sign-catalog.txt
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
