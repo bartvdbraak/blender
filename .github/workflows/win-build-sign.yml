@@ -43,11 +43,12 @@ jobs:
       - name: Catalog
         shell: pwsh
         run: |
-          $searchPath = "${{ github.workspace }}..\build_windows_x64_vc17_Release\bin\Release"
-          $workspaceTrimmed = ${{ github.workspace }} -replace "blender\\$"
+          $workspace = "${{ github.workspace }}\"
+          $searchPath = "$workspace..\build_windows_x64_vc17_Release\bin\Release"
+          $workspaceTrimmed = $workspace -replace "blender\\$"
           $files = Get-ChildItem -Path $searchPath -Recurse -Include *.exe, *.dll, *.pyd | Where-Object { $_.FullName -notmatch "\\blender\.crt" }
           $files | ForEach-Object { $_.FullName -replace [regex]::Escape($workspaceTrimmed), "" } | Out-File sign-catalog.txt -Encoding utf8
-        
+      
       - name: Sign
         uses: azure/trusted-signing-action@v0.3.20
         with:
