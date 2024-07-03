@@ -1,0 +1,30 @@
+name: Build and Sign on Windows
+
+on:
+  push:
+    branches:
+      - "signing"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - ".github/workflows/test.yaml"
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Download Sources
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Update
+        shell: cmd
+        run: make update
+        
+      - name: Build
+        shell: cmd
+        run: make
+  
