@@ -1,5 +1,9 @@
 name: Build and Sign on Windows
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   push:
     branches:
