@@ -43,7 +43,7 @@ jobs:
       - name: Catalog
         shell: pwsh
         run: |
-          $workspace = "${{ github.workspace }}\"
+          $workspace = "${{ github.workspace }}"
           $searchPath = "$workspace..\build_windows_x64_vc17_Release\bin\Release"
           $workspaceTrimmed = $workspace -replace "blender\\$"
           $files = Get-ChildItem -Path $searchPath -Recurse -Include *.exe, *.dll, *.pyd | Where-Object { $_.FullName -notmatch "\\blender\.crt" }
