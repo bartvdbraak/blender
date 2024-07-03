@@ -20,6 +20,13 @@ jobs:
         with:
           lfs: true
 
+      - name: Get external libraries
+        shell: cmd
+        run: |
+          git config --local "submodule.lib/windows_x64.update" "checkout"
+          git submodule update --progress --init "lib/windows_x64"
+          git lfs pull
+
       - name: Update
         shell: cmd
         run: make update
