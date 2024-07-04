@@ -57,7 +57,7 @@ jobs:
           azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           endpoint: https://weu.codesigning.azure.net/
           trusted-signing-account-name: bartvdbraak-blender
-          certificate-profile-name: code-sign
+          certificate-profile-name: production
           files-catalog: ${{ github.workspace }}\sign-catalog.txt
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
