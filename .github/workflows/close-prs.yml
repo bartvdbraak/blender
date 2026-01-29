@@ -1,0 +1,12 @@
+name: Close GitHub Pull Requests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  close_prs:
+    uses: blender/.github/.github/workflows/close-github-prs.yml@main
+    with:
+      allowed-repo: bartvdbraak/blender
